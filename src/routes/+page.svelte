@@ -7,6 +7,11 @@
   let status = false;
 
   onMount(() => {
+    if (location.protocol === "https:") {
+      alert("HTTPS is not supported. The app will refresh to use HTTP.");
+      location.href = location.href.replace("https", "http");
+    }
+
     const params = new URLSearchParams(location.search);
     const localStorage = window.localStorage;
 
@@ -48,7 +53,11 @@
       ws.send("status");
     };
     ws.onmessage = (event) => {
-      status = event.data == "on";
+      if (event.data === "on") {
+        status = true;
+      } else if (event.data === "off") {
+        status = false;
+      }
     };
     ws.onclose = () => {
       alert("Connection closed.");
