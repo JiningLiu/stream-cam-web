@@ -24,3 +24,4 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 You can deploy the production build to GitHub Pages with `npm run deploy`.
+- Make sure to change script `build` in `package.json` to use your own domain, or remove the CNAME creation command.
