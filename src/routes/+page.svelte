@@ -35,7 +35,7 @@
 
     (document.getElementById("stream") as HTMLIFrameElement).src =
       "http://" + host + ":8889/cam";
-    ws = new WebSocket("ws://" + host + ":3000");
+    ws = new WebSocket("wss://" + host + ":3000");
     ws.onmessage = (event) => {
       console.log(event.data);
     };
