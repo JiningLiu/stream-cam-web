@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host",
-		"build": "vite build && echo \"cam.jining.dev\" > ./build/CNAME",
+		"build": "vite build && echo \"cam.162849.xyz\" > ./build/CNAME",
 		"preview": "vite preview",
 		"deploy": "gh-pages -d build -t true",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
