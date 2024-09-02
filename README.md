@@ -1,6 +1,6 @@
 # Web Controller for Stream Cam
 
-A production version of this project is available at https://cam.162849.xyz
+A production version of this project is available at http://cam.162849.xyz (make sure to use **http, not https**, in order to connect to your Pi.)
 
 ## Developing
 
