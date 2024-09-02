@@ -1,16 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
+  let client: string;
   let host = "localhost";
   let ws: WebSocket;
+  let status = false;
 
   onMount(() => {
     const params = new URLSearchParams(location.search);
     const localStorage = window.localStorage;
 
-    const client = params.get("client");
+    client = params.get("client") || "";
 
-    if (client === null) {
+    if (client === "") {
       if (localStorage.length === 0) {
         alert("Creating new client. Page will refresh to add new parameter.");
         location.href = "?client=0";
@@ -27,36 +29,35 @@
     const storedHost = localStorage.getItem(client);
 
     if (storedHost === null) {
-      host = prompt("Camera IP/Hostname") || "localhost";
-      localStorage.setItem(client, host);
+      host = prompt("Camera IP/Hostname") || "";
+      if (host !== "") {
+        localStorage.setItem(client, host);
+      }
     } else {
       host = storedHost;
     }
 
-    (document.getElementById("stream") as HTMLIFrameElement).src =
-      "http://" + host + ":8889/cam";
+    reload();
+    wsConnect();
+  });
+
+  function wsConnect() {
+    localStorage.setItem(client, host);
     ws = new WebSocket("ws://" + host + ":3000");
-    ws.onmessage = (event) => {
-      console.log(event.data);
+    ws.onopen = () => {
+      ws.send("status");
     };
-    ws.onerror = () => {
-      alert("Connection error. Refreshing page.");
-      location.reload();
+    ws.onmessage = (event) => {
+      status = event.data == "on";
     };
     ws.onclose = () => {
-      alert("Connection closed. Refreshing page.");
-      location.reload();
+      alert("Connection closed.");
     };
-    ws.send("status");
-  });
+  }
 
   function reload() {
     (document.getElementById("stream") as HTMLIFrameElement).src =
       "http://" + host + ":8889/cam";
-  }
-
-  function reconnect() {
-    ws = new WebSocket(ws.url);
   }
 
   function on() {
@@ -76,13 +77,24 @@
   <iframe id="stream" title="Live Stream" src="" frameborder="0" />
 
   <div id="buttons">
+    <span>Client {client}</span>
+
+    <input
+      type="text"
+      id="host"
+      bind:value={host}
+      placeholder="Camera IP/Hostname"
+    />
+
     <button id="reload" on:click={reload}>Reload Feed</button>
 
-    <button id="reconnect" on:click={reconnect}>Reconnect Server</button>
+    <button id="reconnect" on:click={wsConnect}>Reconnect Server</button>
 
-    <button id="on" on:click={on}>Camera On</button>
+    <button id="on" on:click={on} class={status ? "bg" : ""}>Camera On</button>
 
-    <button id="off" on:click={off}>Camera Off</button>
+    <button id="off" on:click={off} class={status ? "" : "bg"}
+      >Camera Off</button
+    >
 
     <button id="reboot" on:click={reboot}>Reboot System</button>
   </div>
@@ -90,6 +102,7 @@
 
 <style lang="scss">
   :global(body) {
+    color: white;
     background: black;
     font-family:
       "Helvetica Neue",
@@ -108,10 +121,17 @@
     overflow: hidden;
   }
 
+  input {
+    color: black;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+  }
+
   button {
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.2s;
@@ -162,10 +182,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-
-    button {
-      height: 100%;
-    }
   }
 
   #reload {
@@ -177,14 +193,20 @@
   }
 
   #reconnect {
-    background: rgba(165, 80, 166, 1);
+    background: rgba(254, 199, 37, 1);
   }
 
   #reconnect:hover {
-    background: rgba(165, 80, 166, 0.8);
+    background: rgba(254, 199, 37, 0.8);
   }
 
-  #on {
+  #on,
+  #off {
+    background: #222;
+    height: 100%;
+  }
+
+  #on.bg {
     background: rgba(99, 185, 71, 1);
   }
 
@@ -192,16 +214,15 @@
     background: rgba(99, 185, 71, 0.8);
   }
 
-  #off {
-    background: rgba(254, 199, 37, 1);
+  #off.bg {
+    background: rgba(247, 130, 28, 1);
   }
 
   #off:hover {
-    background: rgba(254, 199, 37, 0.8);
+    background: rgba(247, 130, 28, 0.8);
   }
 
   #reboot {
-    height: 50%;
     background: rgba(224, 55, 63, 1);
   }
 
