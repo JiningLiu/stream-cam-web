@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   let client: string;
-  let host = "localhost";
+  let host = "";
   let ws: WebSocket;
   let status = false;
 
@@ -80,6 +80,13 @@
   function reboot() {
     ws.send("reboot");
   }
+
+  function reset() {
+    if (confirm("Reset? This will remove all clients.")) {
+      localStorage.clear();
+      location.href = "?client=0";
+    }
+  }
 </script>
 
 <div id="main">
@@ -94,6 +101,8 @@
       bind:value={host}
       placeholder="Camera IP/Hostname"
     />
+
+    <button id="reset" on:click={reset}>Reset</button>
 
     <button id="reload" on:click={reload}>Reload Feed</button>
 
@@ -193,6 +202,16 @@
     gap: 8px;
   }
 
+  #reset {
+    padding: 0.5rem 1rem;
+    font-size: 1vw;
+    background: rgba(34, 34, 34, 1);
+  }
+
+  #reset:hover {
+    background: rgba(34, 34, 34, 0.8);
+  }
+
   #reload {
     background: rgba(0, 123, 255, 1);
   }
@@ -211,7 +230,7 @@
 
   #on,
   #off {
-    background: #222;
+    background: rgba(34, 34, 34, 1);
     height: 100%;
   }
 
