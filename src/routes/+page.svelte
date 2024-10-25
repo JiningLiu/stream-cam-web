@@ -4,6 +4,7 @@
   let client: string;
   let host = "";
   let ws: WebSocket;
+  let connected = false;
   let status = false;
 
   onMount(() => {
@@ -50,6 +51,7 @@
     localStorage.setItem(client, host);
     ws = new WebSocket("ws://" + host + ":3000");
     ws.onopen = () => {
+      connected = true;
       ws.send("status");
     };
     ws.onmessage = (event) => {
@@ -60,6 +62,7 @@
       }
     };
     ws.onclose = () => {
+      connected = false;
       alert("Connection closed.");
     };
   }
@@ -93,7 +96,7 @@
   <iframe id="stream" title="Live Stream" src="" frameborder="0" />
 
   <div id="buttons">
-    <span>Client {client}</span>
+    <span>Client {client} ({connected ? "Connected" : "Disconnected"})</span>
 
     <input
       type="text"
