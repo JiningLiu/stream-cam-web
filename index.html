@@ -5,21 +5,22 @@
 		<link rel="icon" href="./favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
-		<link href="./app/immutable/assets/2.BKBCpBsb.css" rel="stylesheet">
-		<link rel="modulepreload" href="./app/immutable/entry/start.B-iNY4yy.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/entry.BqMWCzkD.js">
+		<link href="./app/immutable/assets/2.BEm7O4F0.css" rel="stylesheet">
+		<link rel="modulepreload" href="./app/immutable/entry/start.D7YxDfQ5.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/entry.CHwjjm-7.js">
 		<link rel="modulepreload" href="./app/immutable/chunks/scheduler.urFzR-R0.js">
-		<link rel="modulepreload" href="./app/immutable/entry/app.DWQpS7S4.js">
-		<link rel="modulepreload" href="./app/immutable/chunks/index.BMfImeCe.js">
-		<link rel="modulepreload" href="./app/immutable/nodes/0.BqE41PeF.js">
-		<link rel="modulepreload" href="./app/immutable/nodes/2.CO7fivVY.js">
+		<link rel="modulepreload" href="./app/immutable/entry/app.Bj7k7ldZ.js">
+		<link rel="modulepreload" href="./app/immutable/chunks/index.DkE-deYj.js">
+		<link rel="modulepreload" href="./app/immutable/nodes/0.BF787C1G.js">
+		<link rel="modulepreload" href="./app/immutable/nodes/2.BE_gJ1we.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">  <div id="main" class="svelte-1t740pg"><iframe id="stream" title="Live Stream" src="" frameborder="0" class="svelte-1t740pg"></iframe> <div id="buttons" class="svelte-1t740pg"><span id="client" class="svelte-1t740pg">Client undefined (Disconnected)</span> <input type="text" id="host" placeholder="Camera IP/Hostname" class="svelte-1t740pg" value=""> <button id="reset" class="svelte-1t740pg" data-svelte-h="svelte-1fpzr60">Reset Web Client</button> <div class="hstack svelte-1t740pg"><button id="reload" class="svelte-1t740pg" data-svelte-h="svelte-po3z75">Reload Feed</button> <button id="reconnect" class="svelte-1t740pg" data-svelte-h="svelte-2ou9e1">Reconnect Server</button></div> <button id="on" class=" svelte-1t740pg">Camera  On</button> <button id="off" class="bg svelte-1t740pg">Camera is Off</button> <div class="hstack svelte-1t740pg"><button id="reboot" class="svelte-1t740pg" data-svelte-h="svelte-1pa9fq5">Reboot</button> <button id="shutdown" class="svelte-1t740pg" data-svelte-h="svelte-xs473m">Shutdown</button></div></div> </div> 
+		<div style="display: contents">  <div id="main" class="svelte-gytrl1"><iframe id="stream" title="Live Stream" src="" frameborder="0" class="svelte-gytrl1"></iframe> <div id="buttons" class="svelte-gytrl1"><div class="hstack svelte-gytrl1"><span id="client" class="svelte-gytrl1">Client
+        <select class="svelte-gytrl1"><option value="" data-svelte-h="svelte-njwa56">New...</option><optgroup label="Existing Clients"></optgroup></select> <b>Disconnected</b></span></div> <input type="text" id="host" placeholder="Camera IP/Hostname" class="svelte-gytrl1" value=""> <div class="hstack svelte-gytrl1"><button id="reload" class="svelte-gytrl1" data-svelte-h="svelte-po3z75">Reload Feed</button> <button id="reconnect" class="svelte-gytrl1" data-svelte-h="svelte-2ou9e1">Reconnect Server</button></div> <button id="on" class=" svelte-gytrl1">Camera  On</button> <button id="off" class="bg svelte-gytrl1">Camera is Off</button> <button id="reset" class="svelte-gytrl1" data-svelte-h="svelte-1fpzr60">Reset Web Client</button> <div class="hstack svelte-gytrl1"><button id="reboot" class="svelte-gytrl1" data-svelte-h="svelte-1pa9fq5">Reboot</button> <button id="shutdown" class="svelte-gytrl1" data-svelte-h="svelte-xs473m">Shutdown</button></div></div> </div> 
 			
 			<script>
 				{
-					__sveltekit_3s053w = {
+					__sveltekit_mvak4y = {
 						base: new URL(".", location).pathname.slice(0, -1)
 					};
 
@@ -28,8 +29,8 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./app/immutable/entry/start.B-iNY4yy.js"),
-						import("./app/immutable/entry/app.DWQpS7S4.js")
+						import("./app/immutable/entry/start.D7YxDfQ5.js"),
+						import("./app/immutable/entry/app.Bj7k7ldZ.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 2],
