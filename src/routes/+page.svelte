@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
+  let localStorageLength = 0;
   let client: string;
   let host = "";
   let ws: WebSocket;
@@ -9,13 +10,15 @@
 
   onMount(() => {
     if (location.protocol === "https:") {
-      alert("HTTPS is not supported. The app will refresh to use HTTP.\nIf the error persists, please manually change the protocol in the address bar from HTTPS to HTTP.");
-      location.href = "http://" + location.hostname + location.pathname + location.search;
+      alert(
+        "HTTPS is not supported. The app will refresh to use HTTP.\nIf the error persists, please manually change the protocol in the address bar from HTTPS to HTTP."
+      );
+      location.href =
+        "http://" + location.hostname + location.pathname + location.search;
       return;
     }
 
     const params = new URLSearchParams(location.search);
-    const localStorage = window.localStorage;
 
     client = params.get("client") || "";
 
@@ -44,6 +47,8 @@
       host = storedHost;
     }
 
+    localStorageLength = localStorage.length;
+
     reload();
     wsConnect();
   });
@@ -69,6 +74,16 @@
       connected = false;
       alert("Connection closed.");
     };
+  }
+
+  function handleClientChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value;
+    if (value === "") {
+      location.href = "?client=" + localStorageLength;
+    } else {
+      location.href = "?client=" + value;
+    }
   }
 
   function handleKeydown(event: KeyboardEvent) {
@@ -114,9 +129,29 @@
   <iframe id="stream" title="Live Stream" src="" frameborder="0" />
 
   <div id="buttons">
-    <span id="client"
-      >Client {client} ({connected ? "Connected" : "Disconnected"})</span
-    >
+    <div class="hstack">
+      <span id="client">
+        Client
+        <select
+          on:change={handleClientChange}
+          on:mousedown={() => {
+            localStorageLength = localStorage.length;
+          }}
+        >
+          <option value="">New...</option>
+          <optgroup label="Existing Clients">
+            {#each Array.from({ length: localStorageLength }, (_, i) => i) as i}
+              <option value={i} selected={client === i.toString()}
+                >{i}{client === i.toString()
+                  ? ""
+                  : " - " + localStorage.getItem(i.toString())}</option
+              >
+            {/each}
+          </optgroup>
+        </select>
+        <b>{connected ? "Connected" : "Disconnected"}</b></span
+      >
+    </div>
 
     <input
       type="text"
@@ -125,8 +160,6 @@
       placeholder="Camera IP/Hostname"
       on:keydown={handleKeydown}
     />
-
-    <button id="reset" on:click={reset}>Reset Web Client</button>
 
     <div class="hstack">
       <button id="reload" on:click={reload}>Reload Feed</button>
@@ -141,6 +174,8 @@
     <button id="off" on:click={off} class={status ? "" : "bg"}
       >Camera {status ? "" : "is"} Off</button
     >
+
+    <button id="reset" on:click={reset}>Reset Web Client</button>
 
     <div class="hstack">
       <button id="reboot" on:click={reboot}>Reboot</button>
@@ -171,6 +206,7 @@
     overflow: hidden;
   }
 
+  select,
   input {
     color: white;
     background: rgba(34, 34, 34, 1);
@@ -207,6 +243,10 @@
         #client,
         input {
           font-size: 0.75vw;
+        }
+
+        select {
+          max-width: 6vw;
         }
 
         input {
@@ -257,6 +297,10 @@
         font-size: 1.5vh;
       }
 
+      select {
+        max-width: 24vh;
+      }
+
       input {
         width: calc((100vw - 16px - ((100vh - 16px - 4px) / 9 * 16)) - 18px);
         border-radius: 0.75vh;
@@ -297,10 +341,6 @@
     gap: 8px;
   }
 
-  #reset:hover {
-    background: rgba(34, 34, 34, 0.8);
-  }
-
   #reload {
     background: rgba(0, 123, 255, 0.2);
   }
@@ -337,6 +377,10 @@
 
   #off:hover {
     background: rgba(247, 130, 28, 0.8);
+  }
+
+  #reset:hover {
+    background: rgba(34, 34, 34, 0.8);
   }
 
   #reset,
