@@ -59,12 +59,21 @@
         status = true;
       } else if (event.data === "off") {
         status = false;
+      } else {
+        return;
       }
+      reload();
     };
     ws.onclose = () => {
       connected = false;
       alert("Connection closed.");
     };
+  }
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      wsConnect();
+    }
   }
 
   function reload() {
@@ -81,7 +90,15 @@
   }
 
   function reboot() {
-    ws.send("reboot");
+    if (confirm("Reboot Camera?")) {
+      ws.send("reboot");
+    }
+  }
+
+  function shutdown() {
+    if (confirm("Shutdown Camera?")) {
+      ws.send("shutdown");
+    }
   }
 
   function reset() {
@@ -96,28 +113,39 @@
   <iframe id="stream" title="Live Stream" src="" frameborder="0" />
 
   <div id="buttons">
-    <span>Client {client} ({connected ? "Connected" : "Disconnected"})</span>
+    <span id="client"
+      >Client {client} ({connected ? "Connected" : "Disconnected"})</span
+    >
 
     <input
       type="text"
       id="host"
       bind:value={host}
       placeholder="Camera IP/Hostname"
+      on:keydown={handleKeydown}
     />
 
-    <button id="reset" on:click={reset}>Reset</button>
+    <button id="reset" on:click={reset}>Reset Web Client</button>
 
-    <button id="reload" on:click={reload}>Reload Feed</button>
+    <div class="hstack">
+      <button id="reload" on:click={reload}>Reload Feed</button>
 
-    <button id="reconnect" on:click={wsConnect}>Reconnect Server</button>
+      <button id="reconnect" on:click={wsConnect}>Reconnect Server</button>
+    </div>
 
-    <button id="on" on:click={on} class={status ? "bg" : ""}>Camera On</button>
-
-    <button id="off" on:click={off} class={status ? "" : "bg"}
-      >Camera Off</button
+    <button id="on" on:click={on} class={status ? "bg" : ""}
+      >Camera {status ? "is" : ""} On</button
     >
 
-    <button id="reboot" on:click={reboot}>Reboot System</button>
+    <button id="off" on:click={off} class={status ? "" : "bg"}
+      >Camera {status ? "" : "is"} Off</button
+    >
+
+    <div class="hstack">
+      <button id="reboot" on:click={reboot}>Reboot</button>
+
+      <button id="shutdown" on:click={shutdown}>Shutdown</button>
+    </div>
   </div>
 </div>
 
@@ -143,20 +171,17 @@
   }
 
   input {
-    color: black;
-    border: none;
+    color: white;
+    background: rgba(34, 34, 34, 1);
+    border: white 1px solid;
     padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
   }
 
   button {
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 2vw;
     font-weight: 600;
   }
 
@@ -167,7 +192,7 @@
 
   @media (max-aspect-ratio: 20 / 9) {
     #main {
-      margin: calc((100vh - ((80vw - 4px) / 16 * 9)) / 2 - 2px) 0;
+      margin: calc((100vh - ((80vw - 4px) / 16 * 9)) / 2 - 2px) 8px;
 
       iframe {
         width: calc(80vw - 4px);
@@ -178,23 +203,83 @@
       #buttons {
         height: calc((80vw - 4px) / 16 * 9 + 4px);
 
+        #client,
+        input {
+          font-size: 0.75vw;
+        }
+
+        input {
+          width: calc(20vw - 34px);
+          border-radius: 0.25vw;
+        }
+
         button {
           width: calc(20vw - 16px);
+          font-size: 2vw;
+          padding: 0.75vw 1.5vw;
+          border-radius: 0.5vw;
+        }
+
+        #reset,
+        #reload,
+        #reconnect,
+        #reboot,
+        #shutdown {
+          font-size: 1vw;
+          padding: 0.375vw 0.75vw;
+        }
+
+        #reload,
+        #reconnect,
+        #reboot,
+        #shutdown {
+          width: calc(10vw - 12px);
         }
       }
     }
   }
 
   @media (min-aspect-ratio: 20 / 9) {
+    #main {
+      margin: 8px;
+    }
+
     iframe {
-      width: calc((100vh - 4px) / 9 * 16);
-      height: calc(100vh - 4px);
+      width: calc((100vh - 16px - 4px) / 9 * 16);
+      height: calc(100vh - 16px - 4px);
       border: 2px solid white;
     }
 
     #buttons {
+      #client,
+      input {
+        font-size: 1.5vh;
+      }
+
+      input {
+        width: calc((100vw - 16px - ((100vh - 16px - 4px) / 9 * 16)) - 18px);
+        border-radius: 0.75vh;
+      }
+
       button {
-        width: calc(100vw - ((100vh - 4px) / 9 * 16) - 20px);
+        font-size: 4vh;
+        padding: 1.5vh 3vh;
+        border-radius: 1vh;
+      }
+
+      #reset,
+      #reload,
+      #reconnect,
+      #reboot,
+      #shutdown {
+        font-size: 2vh;
+        padding: 0.75vh 1.5vh;
+      }
+      #reload,
+      #reconnect,
+      #reboot,
+      #shutdown {
+        width: calc((100vw - 16px - ((100vh - 16px - 4px) / 9 * 16)) / 2 - 4px);
       }
     }
   }
@@ -205,10 +290,10 @@
     gap: 8px;
   }
 
-  #reset {
-    padding: 0.5rem 1rem;
-    font-size: 1vw;
-    background: rgba(34, 34, 34, 1);
+  .hstack {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
   }
 
   #reset:hover {
@@ -216,19 +301,19 @@
   }
 
   #reload {
-    background: rgba(0, 123, 255, 1);
+    background: rgba(0, 123, 255, 0.2);
   }
 
   #reload:hover {
-    background: rgba(0, 123, 255, 0.8);
+    background: rgba(0, 123, 255, 1);
   }
 
   #reconnect {
-    background: rgba(254, 199, 37, 1);
+    background: rgba(254, 199, 37, 0.2);
   }
 
   #reconnect:hover {
-    background: rgba(254, 199, 37, 0.8);
+    background: rgba(254, 199, 37, 1);
   }
 
   #on,
@@ -253,11 +338,15 @@
     background: rgba(247, 130, 28, 0.8);
   }
 
-  #reboot {
-    background: rgba(224, 55, 63, 1);
+  #reset,
+  #reboot,
+  #shutdown {
+    background: rgba(224, 55, 63, 0.2);
   }
 
-  #reboot:hover {
-    background: rgba(224, 55, 63, 0.8);
+  #reset:hover,
+  #reboot:hover,
+  #shutdown:hover {
+    background: rgba(224, 55, 63, 1);
   }
 </style>
