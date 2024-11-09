@@ -10,7 +10,8 @@
   onMount(() => {
     if (location.protocol === "https:") {
       alert("HTTPS is not supported. The app will refresh to use HTTP.\nIf the error persists, please manually change the protocol in the address bar from HTTPS to HTTP.");
-      location.href = location.href.replace("https", "http");
+      location.href = "http://" + location.hostname + location.pathname + location.search;
+      return;
     }
 
     const params = new URLSearchParams(location.search);
