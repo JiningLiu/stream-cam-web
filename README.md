@@ -6,7 +6,7 @@ A production version of this project for other purposes is available at http://c
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
 npm run dev
@@ -15,9 +15,11 @@ npm run dev
 npm run dev -- --open
 ```
 
+The port is exposed by default with the `--host` flag.
+
 ## Building
 
-To create a production version of your app:
+To create a production version of the app:
 
 ```bash
 npm run build
