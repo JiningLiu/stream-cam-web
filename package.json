@@ -1,25 +1,25 @@
 {
-	"name": "stream-cam-web",
-	"version": "1.0.0",
-	"private": true,
-	"scripts": {
-		"dev": "vite dev --host",
-		"build": "vite build && echo \"cam.162849.xyz\" > ./build/CNAME",
-		"preview": "vite preview",
-		"deploy": "gh-pages -d build -t true",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-	},
-	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/adapter-static": "^3.0.4",
-		"@sveltejs/kit": "^2.0.0",
-		"@sveltejs/vite-plugin-svelte": "^3.0.0",
-		"sass-embedded": "^1.77.8",
-		"svelte": "^4.2.7",
-		"svelte-check": "^3.6.0",
-		"typescript": "^5.0.0",
-		"vite": "^5.0.3"
-	},
-	"type": "module"
+  "name": "stream-cam-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite dev --host",
+    "build": "vite build && echo \"cam.162849.xyz\" > ./build/CNAME",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d build -t true",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-static": "^3.0.4",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "sass-embedded": "^1.77.8",
+    "svelte": "^4.2.7",
+    "svelte-check": "^3.6.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.3"
+  },
+  "type": "module"
 }
