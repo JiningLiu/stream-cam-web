@@ -105,6 +105,14 @@
     ws.send("off");
   }
 
+  function overlay() {
+    window?.open(`${location.protocol}//${location.hostname}:8000`, "_blank")?.focus();
+  }
+
+  function update() {
+    ws.send("update");
+  }
+
   function reboot() {
     if (confirm("Reboot Camera?")) {
       ws.send("reboot");
@@ -175,7 +183,13 @@
       >Camera {status ? "" : "is"} Off</button
     >
 
-    <button id="reset" on:click={reset}>Reset Web Client</button>
+    <button id="overlay" on:click={overlay}>Overlay</button>
+
+    <div class="hstack">
+      <button id="reset" on:click={reset}>Clear</button>
+
+      <button id="update" on:click={update}>Update</button>
+    </div>
 
     <div class="hstack">
       <button id="reboot" on:click={reboot}>Reboot</button>
@@ -261,7 +275,9 @@
           border-radius: 0.5vw;
         }
 
+        #overlay,
         #reset,
+        #update,
         #reload,
         #reconnect,
         #reboot,
@@ -270,6 +286,8 @@
           padding: 0.375vw 0.75vw;
         }
 
+        #reset,
+        #update,
         #reload,
         #reconnect,
         #reboot,
@@ -312,7 +330,9 @@
         border-radius: 1vh;
       }
 
+      #overlay,
       #reset,
+      #update,
       #reload,
       #reconnect,
       #reboot,
@@ -320,6 +340,9 @@
         font-size: 2vh;
         padding: 0.75vh 1.5vh;
       }
+
+      #reset,
+      #update,
       #reload,
       #reconnect,
       #reboot,
@@ -367,6 +390,10 @@
     background: rgba(99, 185, 71, 1);
   }
 
+  #overlay {
+    background: rgba(0, 123, 255, 0.2);
+  }
+
   #on:hover {
     background: rgba(99, 185, 71, 0.8);
   }
@@ -383,13 +410,19 @@
     background: rgba(34, 34, 34, 0.8);
   }
 
+  #overlay:hover {
+    background: rgba(0, 123, 255, 1);
+  }
+
   #reset,
+  #update,
   #reboot,
   #shutdown {
     background: rgba(224, 55, 63, 0.2);
   }
 
   #reset:hover,
+  #update:hover,
   #reboot:hover,
   #shutdown:hover {
     background: rgba(224, 55, 63, 1);
