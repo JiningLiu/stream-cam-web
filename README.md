@@ -1,6 +1,8 @@
-# Web Controller for Stream Cam
+# Web Controller for Stream Cam (Legacy)
 
-For use with the [stream-cam](https://github.com/JiningLiu/stream-cam/) project, **install with the script found in that project**. The installation steps in the [README](https://github.com/JiningLiu/stream-cam/blob/dev/README.md) of that project will guide you through installing all software needed.
+For use with the [stream-cam-legacy](https://github.com/JiningLiu/stream-cam-legacy/) project, **install with the script found in that project**. The installation steps in the [README](https://github.com/JiningLiu/stream-cam-legacy/blob/dev/README.md) of that project will guide you through installing all software needed.
+
+> ⚠️ A new system is under development... Follow [JiningLiu/stream-cam](https://github.com/JiningLiu/stream-cam) for updates.
 
 ## Developing
 
